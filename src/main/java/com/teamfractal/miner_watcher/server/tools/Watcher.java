@@ -7,8 +7,10 @@ import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.world.BlockEvent;
@@ -29,14 +31,15 @@ public class Watcher {
 
     @SubscribeEvent
     public static void onBlockBreak(final BlockEvent.BreakEvent event){
-        final Level world = event.getPlayer().getLevel();
+        final Player player = event.getPlayer();
+        final Level world = player.getLevel();
         final Block blockBroke = event.getState().getBlock();
         final BlockPos pos = event.getPos();
         final String blockCoord = MessageFormat.format("[{0},{1},{2}]",pos.getX(),pos.getY(),pos.getZ());
         final String blockName = blockBroke.getName().getString();
-        final String UUID = event.getPlayer().getStringUUID();
-        final String player = event.getPlayer().getName().getString();
-        sendMessage(world,blockBroke,player,UUID,blockCoord,blockName);
+        final String UUID = player.getStringUUID();
+        final String playerName = player.getName().getString();
+        sendMessage(world,player,blockBroke,playerName,UUID,blockCoord,blockName);
     }
 
     private static Component generateMessage(boolean exposeName, boolean exposeUUID, String player, String UUID, String blockCoord, String blockName){
@@ -66,27 +69,34 @@ public class Watcher {
         return false;
     }
 
-    private static void sendMessage(Level world, Block blockBroke, String player, String UUID, String blockCoord, String blockName){
-        if (MWServerConfig.CHAT_NOTIFY.get() && blockIsInList(blockBroke,0)){
-            sendToServerPlayer(world,player,UUID,blockCoord,blockName);
-        }
-        if (MWServerConfig.LOG_NOTIFY_1.get() && blockIsInList(blockBroke,1)){
-            final int t = MWServerConfig.LOG_NOTIFY_1_TYPE.get();
-            final boolean eN = MWServerConfig.LOG_NOTIFY_1_EXPOSE_NAME.get();
-            final boolean eU = MWServerConfig.LOG_NOTIFY_1_EXPOSE_UUID.get();
-            logInEvents(t, generateMessage(eN,eU,player,UUID,blockCoord,blockName).getString());
-        }
-        if (MWServerConfig.LOG_NOTIFY_2.get() && blockIsInList(blockBroke,2)){
-            final int t = MWServerConfig.LOG_NOTIFY_2_TYPE.get();
-            final boolean eN = MWServerConfig.LOG_NOTIFY_2_EXPOSE_NAME.get();
-            final boolean eU = MWServerConfig.LOG_NOTIFY_2_EXPOSE_UUID.get();
-            logInEvents(t, generateMessage(eN,eU,player,UUID,blockCoord,blockName).getString());
-        }
-        if (MWServerConfig.LOG_NOTIFY_3.get() && blockIsInList(blockBroke,3)){
-            final int t = MWServerConfig.LOG_NOTIFY_3_TYPE.get();
-            final boolean eN = MWServerConfig.LOG_NOTIFY_3_EXPOSE_NAME.get();
-            final boolean eU = MWServerConfig.LOG_NOTIFY_3_EXPOSE_UUID.get();
-            logInEvents(t, generateMessage(eN,eU,player,UUID,blockCoord,blockName).getString());
+    private static void sendMessage(Level world, Player player, Block blockBroke, String playerName, String UUID, String blockCoord, String blockName){
+        if(player instanceof ServerPlayer serverPlayer){
+            final boolean isSurvival = serverPlayer.gameMode.isSurvival();
+            if (MWServerConfig.CHAT_NOTIFY.get() && blockIsInList(blockBroke,0)
+                    && (isSurvival || !MWServerConfig.CHAT_NOTIFY_CHECK_SURVIVAL.get())){
+                sendToServerPlayer(world,playerName,UUID,blockCoord,blockName);
+            }
+            if (MWServerConfig.LOG_NOTIFY_1.get() && blockIsInList(blockBroke,1)
+                    && (isSurvival || !MWServerConfig.LOG_NOTIFY_1_CHECK_SURVIVAL.get())){
+                final int t = MWServerConfig.LOG_NOTIFY_1_TYPE.get();
+                final boolean eN = MWServerConfig.LOG_NOTIFY_1_EXPOSE_NAME.get();
+                final boolean eU = MWServerConfig.LOG_NOTIFY_1_EXPOSE_UUID.get();
+                logInEvents(t, generateMessage(eN,eU,playerName,UUID,blockCoord,blockName).getString());
+            }
+            if (MWServerConfig.LOG_NOTIFY_2.get() && blockIsInList(blockBroke,2)
+                    && (isSurvival || !MWServerConfig.LOG_NOTIFY_2_CHECK_SURVIVAL.get())){
+                final int t = MWServerConfig.LOG_NOTIFY_2_TYPE.get();
+                final boolean eN = MWServerConfig.LOG_NOTIFY_2_EXPOSE_NAME.get();
+                final boolean eU = MWServerConfig.LOG_NOTIFY_2_EXPOSE_UUID.get();
+                logInEvents(t, generateMessage(eN,eU,playerName,UUID,blockCoord,blockName).getString());
+            }
+            if (MWServerConfig.LOG_NOTIFY_3.get() && blockIsInList(blockBroke,3)
+                    && (isSurvival || !MWServerConfig.LOG_NOTIFY_3_CHECK_SURVIVAL.get())){
+                final int t = MWServerConfig.LOG_NOTIFY_3_TYPE.get();
+                final boolean eN = MWServerConfig.LOG_NOTIFY_3_EXPOSE_NAME.get();
+                final boolean eU = MWServerConfig.LOG_NOTIFY_3_EXPOSE_UUID.get();
+                logInEvents(t, generateMessage(eN,eU,playerName,UUID,blockCoord,blockName).getString());
+            }
         }
     }
 
