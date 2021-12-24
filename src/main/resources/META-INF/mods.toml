@@ -1,0 +1,16 @@
+modLoader="javafml"
+loaderVersion="[38,)"
+license="GPL v3"
+[[mods]]
+modId="miner_watcher"
+version="${file.jarVersion}"
+displayName="Miner Watcher"
+authors="Tapio"
+description='''
+'''
+[[dependencies.miner_watcher]]
+    modId="forge"
+    mandatory=true
+    versionRange="[38,)"
+    ordering="NONE"
+    side="SERVER"

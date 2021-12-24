@@ -1,0 +1,5 @@
+{
+  "msg.miner_watcher.someone":"Someone",
+  "msg.miner_watcher.uuid": "(UUID: {0})",
+  "msg.miner_watcher.notify": "Attention: {0}{1} broke a(n) {3} at {2}."
+}
