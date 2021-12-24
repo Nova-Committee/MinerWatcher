@@ -3,7 +3,7 @@ loaderVersion="[38,)"
 license="GPL v3"
 [[mods]]
 modId="miner_watcher"
-version="${file.jarVersion}"
+version="1.0.0"
 displayName="Miner Watcher"
 authors="Tapio"
 description='''
