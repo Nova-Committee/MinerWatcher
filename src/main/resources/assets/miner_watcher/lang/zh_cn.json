@@ -1,0 +1,5 @@
+{
+  "msg.miner_watcher.someone":"某人",
+  "msg.miner_watcher.uuid": "（UUID：{0}）",
+  "msg.miner_watcher.notify": "注意：{0}{1}在坐标{2}破坏了一个 {3}。"
+}
