@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.teamfractal.miner_watcher.server.MinerWatcher;
 import com.teamfractal.miner_watcher.server.config.MWServerConfig;
 import com.teamfractal.miner_watcher.server.events.MWAfterBlockBreakEvent;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.tag.Tag;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Logger;
 
