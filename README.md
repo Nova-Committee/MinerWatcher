@@ -1,4 +1,4 @@
-# Mine Watcher: Fabric Edition
+# Miner Watcher: Fabric Edition
 
 ## Introduction
 
