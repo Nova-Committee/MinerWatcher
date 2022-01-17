@@ -1,27 +1,20 @@
 package com.teamfractal.miner_watcher.server;
 
-import com.teamfractal.miner_watcher.server.util.MWRegistryHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import com.teamfractal.miner_watcher.server.config.MWServerConfig;
+import com.teamfractal.miner_watcher.server.tools.Watcher;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+public class MinerWatcher implements DedicatedServerModInitializer {
+	public static final Logger LOGGER = LogManager.getLogger("MinerWatcher");
 
-@Mod(MinerWatcher.MODID)
-public class MinerWatcher
-{
-    public static final String MODID = "miner_watcher";
-    public static final Logger LOGGER = LogManager.getLogger();
-
-    public MinerWatcher() {
-        MWRegistryHandler.register();
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("Miner Watcher activated!");
-    }
+	@Override
+	public void onInitializeServer() {
+		LOGGER.info("Miner Watcher activated!");
+		ModLoadingContext.registerConfig("miner_watcher", ModConfig.Type.COMMON, MWServerConfig.SERVER_CONFIG);
+		Watcher.registerEvent();
+	}
 }

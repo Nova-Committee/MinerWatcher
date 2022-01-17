@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teamfractal.miner_watcher.server.MinerWatcher;
 import com.teamfractal.miner_watcher.server.config.MWServerConfig;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.JsonHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +78,7 @@ public abstract class JsonText {
 
         for (Map.Entry<String, JsonElement> stringJsonElementEntry : jsonObject.entrySet()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry) stringJsonElementEntry;
-            String string = TOKEN_PATTERN.matcher(GsonHelper.convertToString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
+            String string = TOKEN_PATTERN.matcher(JsonHelper.asString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
             entryConsumer.accept(entry.getKey(), string);
         }
 

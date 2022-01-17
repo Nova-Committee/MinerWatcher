@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "miner_watcher",
+  "version": "${version}",
+
+  "name": "Miner Watcher",
+  "description": "You can now see how others mine.",
+  "authors": [
+    "MikhailTapio",
+    "Peakstep"
+  ],
+  "contact": {
+    "sources": "https://github.com/FractalMC/MinerWatcher/"
+  },
+
+  "license": "GPL-3.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "server": [
+      "com.teamfractal.miner_watcher.server.MinerWatcher"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17",
+    "forgeconfigapiport": "*"
+  }
+}
