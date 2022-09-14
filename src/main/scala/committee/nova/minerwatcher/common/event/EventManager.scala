@@ -7,7 +7,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.{ChatComponentText, ChatComponentTranslation}
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.world.BlockEvent.BreakEvent
+
+object EventManager {
+  def init(): Unit = MinecraftForge.EVENT_BUS.register(new EventManager)
+}
 
 class EventManager {
   @SubscribeEvent
